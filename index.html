@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice Quiz — Absolutism, Democracy &amp; the Enlightenment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --ink:#161a2c;
+    --ink-2:#1f2440;
+    --ink-3:#2b3154;
+    --paper:#ece7da;
+    --paper-dim:#a7a695;
+    --gilt:#cda43c;
+    --slate:#8fb0cc;
+    --right:#7aa86f;
+    --wrong:#c4614c;
+    --edge:rgba(236,231,218,.16);
+  }
+  :root:not([data-theme="light"]){ color-scheme: dark; }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="light"]){ color-scheme: dark; }
+  }
+  :root[data-theme="dark"]{ color-scheme: dark; }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:Inter,"Helvetica Neue",Arial,sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding:40px 20px 72px}
+
+  /* ---------- masthead ---------- */
+  .mast{border-bottom:1px solid var(--edge);padding-bottom:22px;margin-bottom:28px}
+  h1{
+    font-family:Spectral,Georgia,serif;
+    font-weight:600;
+    font-size:clamp(28px,5.4vw,40px);
+    line-height:1.12;
+    letter-spacing:-.01em;
+    margin:0 0 8px;
+  }
+  .sub{color:var(--paper-dim);font-size:15px;margin:0;max-width:58ch}
+
+  /* ---------- setup ---------- */
+  .field{margin:26px 0}
+  .field h2{
+    font-family:Inter,sans-serif;font-size:14px;font-weight:600;
+    margin:0 0 10px;color:var(--slate);
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    font:inherit;font-size:14px;
+    background:transparent;color:var(--paper);
+    border:1px solid var(--edge);border-radius:999px;
+    padding:7px 14px;cursor:pointer;
+    transition:background .15s,border-color .15s,color .15s;
+  }
+  .chip:hover{border-color:var(--slate)}
+  .chip[aria-pressed="true"]{
+    background:var(--gilt);border-color:var(--gilt);color:#1a1608;font-weight:500;
+  }
+  .row{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end}
+  select{
+    font:inherit;font-size:15px;background:var(--ink-2);color:var(--paper);
+    border:1px solid var(--edge);border-radius:8px;padding:9px 12px;
+  }
+  .btn{
+    font:inherit;font-weight:600;font-size:16px;
+    background:var(--gilt);color:#1a1608;border:none;border-radius:8px;
+    padding:13px 26px;cursor:pointer;
+    transition:filter .15s;
+  }
+  .btn:hover{filter:brightness(1.08)}
+  .btn:disabled{opacity:.5;cursor:default;filter:none}
+  .btn-quiet{
+    background:transparent;color:var(--paper);border:1px solid var(--edge);
+  }
+  .btn-quiet:hover{border-color:var(--slate);filter:none}
+  :is(button,select,a):focus-visible{outline:2px solid var(--slate);outline-offset:2px}
+
+  .note{color:var(--paper-dim);font-size:13.5px;margin-top:14px;max-width:60ch}
+
+  /* ---------- quiz ---------- */
+  .meter{display:flex;gap:5px;margin-bottom:26px}
+  .tick{height:3px;flex:1;background:var(--ink-3);border-radius:2px}
+  .tick.done{background:var(--slate)}
+  .tick.now{background:var(--gilt)}
+
+  .qcount{color:var(--paper-dim);font-size:13px;margin:0 0 10px;letter-spacing:.02em}
+  .qtext{
+    font-family:Spectral,Georgia,serif;font-size:clamp(20px,3.4vw,25px);
+    line-height:1.4;margin:0 0 24px;
+  }
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{
+    display:flex;gap:13px;align-items:flex-start;text-align:left;
+    font:inherit;font-size:16px;line-height:1.45;
+    background:var(--ink-2);color:var(--paper);
+    border:1px solid var(--edge);border-left:3px solid var(--ink-3);
+    border-radius:7px;padding:14px 16px;cursor:pointer;
+    transition:border-left-color .15s,background .15s;
+  }
+  .opt:hover:not(:disabled){border-left-color:var(--slate);background:var(--ink-3)}
+  .opt:disabled{cursor:default}
+  .opt .mark{
+    font-family:Spectral,Georgia,serif;font-size:15px;color:var(--slate);
+    flex:0 0 auto;width:1.1em;padding-top:1px;
+  }
+  .opt.correct{border-left-color:var(--right);background:rgba(122,168,111,.13)}
+  .opt.correct .mark{color:var(--right)}
+  .opt.picked-wrong{border-left-color:var(--wrong);background:rgba(196,97,76,.13)}
+  .opt.picked-wrong .mark{color:var(--wrong)}
+  .opt.dim{opacity:.55}
+
+  .verdict{margin-top:22px;padding-left:15px;border-left:2px solid var(--gilt)}
+  .verdict b{display:block;font-family:Spectral,serif;font-size:17px;margin-bottom:4px}
+  .verdict b.yes{color:var(--right)}
+  .verdict b.no{color:var(--wrong)}
+  .verdict p{margin:0;color:var(--paper-dim);font-size:15px}
+  .after{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap}
+
+  /* ---------- results ---------- */
+  .score{font-family:Spectral,serif;font-size:56px;line-height:1;margin:0 0 6px}
+  .score small{font-size:24px;color:var(--paper-dim)}
+  .misses{margin:26px 0 0;padding:0;list-style:none}
+  .misses li{border-top:1px solid var(--edge);padding:14px 0}
+  .misses .mq{font-family:Spectral,serif;font-size:17px;margin:0 0 5px}
+  .misses .ma{margin:0;font-size:14.5px;color:var(--paper-dim)}
+  .misses .ma span{color:var(--right)}
+
+  .thinking{color:var(--paper-dim);font-size:15px;display:flex;align-items:center;gap:10px}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--gilt);animation:pulse 1.1s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.25}50%{opacity:1}}
+  @media (prefers-reduced-motion:reduce){.dot{animation:none;opacity:.7}}
+  .hidden{display:none}
+  .err{color:var(--wrong);font-size:14.5px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="mast">
+    <h1>Absolutism, Democracy &amp; the Enlightenment</h1>
+    <p class="sub">Multiple-choice practice. Pick your topics, answer, see why. Every round pulls a different set of questions.</p>
+  </header>
+
+  <!-- SETUP -->
+  <section id="setup">
+    <div class="field">
+      <h2>Topics</h2>
+      <div class="chips" id="topics"></div>
+    </div>
+
+    <div class="field row">
+      <div>
+        <h2>Questions</h2>
+        <select id="count">
+          <option value="5">5</option>
+          <option value="10" selected>10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+      <button class="btn" id="start">Start quiz</button>
+    </div>
+    <p class="note" id="setupNote"></p>
+    <p class="err hidden" id="setupErr"></p>
+  </section>
+
+  <!-- LOADING -->
+  <section id="loading" class="hidden">
+    <div class="thinking"><span class="dot"></span><span id="loadMsg">Shuffling a fresh set of questions…</span></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hidden">
+    <div class="meter" id="meter"></div>
+    <p class="qcount" id="qcount"></p>
+    <p class="qtext" id="qtext"></p>
+    <div class="opts" id="opts"></div>
+    <div class="verdict hidden" id="verdict"><b id="vhead"></b><p id="vbody"></p></div>
+    <div class="after hidden" id="after">
+      <button class="btn" id="next">Next question</button>
+      <button class="btn btn-quiet" id="quit">End quiz</button>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="hidden">
+    <p class="score"><span id="scoreNum"></span><small id="scoreOf"></small></p>
+    <p class="sub" id="scoreLine"></p>
+    <ul class="misses" id="misses"></ul>
+    <div class="after">
+      <button class="btn" id="again">New quiz</button>
+      <button class="btn btn-quiet" id="retryMissed">Retry missed only</button>
+      <button class="btn btn-quiet" id="back">Change topics</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TOPICS = [
+    { id:"absolutism",  label:"Absolute rulers" },
+    { id:"democracy",   label:"Democracy: Athens, Rome, England, US" },
+    { id:"prelight",    label:"Life before the Enlightenment" },
+    { id:"estates",     label:"Social hierarchy & percentages" },
+    { id:"ideas",       label:"Enlightenment ideas" },
+    { id:"philosophers",label:"Philosophers" },
+    { id:"science",     label:"Scientific Revolution & method" }
+  ];
+
+  // ---------- question bank ----------
+  var BANK = [
+    {t:"absolutism",q:"Divine Right of Kings held that a monarch's authority came from where?",o:["God alone","A vote of the nobility","The written constitution","Parliament's approval"],a:0,e:"Divine Right claimed the king answered to God, not to subjects, nobles, or law — which is why it left no room for a body that could check him."},
+    {t:"absolutism",q:"Louis XIV kept nobles living at Versailles largely in order to:",o:["Weaken their independent power by keeping them dependent on him","Give them a share of royal decision-making","Reduce the crown's expenses","Train them as scientists"],a:0,e:"Drawing nobles into court life and ritual kept them occupied and dependent, which centralized power in the king's hands."},
+    {t:"absolutism",q:"Which of these is NOT a typical characteristic of an absolute monarch?",o:["Sharing lawmaking power with an elected legislature","Maintaining a large standing army","Controlling or influencing the state religion","Censoring criticism of the crown"],a:0,e:"Absolute rulers avoided representative bodies precisely because they would limit the crown."},
+    {t:"absolutism",q:"'L'état, c'est moi' ('I am the state') best illustrates:",o:["A ruler identifying his own person with total state authority","A monarch's pledge to serve the general will","An argument for separation of powers","A defense of parliamentary sovereignty"],a:0,e:"The phrase compresses absolutism into a sentence: no distinction between the ruler and the state he governs."},
+    {t:"absolutism",q:"Absolute monarchs commonly funded grand palaces and court art mainly to:",o:["Display power and impress rivals and subjects","Provide jobs for the Third Estate","Satisfy demands from Parliament","Fund scientific academies"],a:0,e:"Patronage and architecture were instruments of prestige — visible proof of a ruler's supremacy."},
+
+    {t:"democracy",q:"Athens is best known for which form of government?",o:["Direct democracy, where citizens voted on laws themselves","A representative republic with elected senators","A constitutional monarchy","Rule by an absolute monarch"],a:0,e:"Athenian citizens voted personally rather than through representatives — though citizenship excluded women, enslaved people, and foreigners."},
+    {t:"democracy",q:"Which contribution comes from the Roman Republic?",o:["Elected representatives and written law applying to citizens","Direct voting by all residents","The Magna Carta","The Bill of Rights of 1689"],a:0,e:"Rome gave the Western tradition representative office-holding, the Senate, and the Twelve Tables as public written law."},
+    {t:"democracy",q:"The Magna Carta (1215) is significant because it established that:",o:["The king is not above the law","All men may vote","Church and state must be separate","Judges are appointed for life"],a:0,e:"It bound the monarch to legal limits and protected the rights of nobles — the seed of limited government in England."},
+    {t:"democracy",q:"The English Bill of Rights (1689) resulted in:",o:["A constitutional monarchy with a monarch limited by Parliament","The abolition of the monarchy","The founding of the Roman Senate","An absolute monarchy under divine right"],a:0,e:"Following the Glorious Revolution it fixed Parliament's supremacy and protected rights such as free elections."},
+    {t:"democracy",q:"Which feature did the United States take most directly from Montesquieu?",o:["Separation of powers into three branches","Direct voting on every law","A hereditary upper house","A state church"],a:0,e:"The legislative/executive/judicial structure and checks and balances follow Montesquieu's argument against concentrated power."},
+    {t:"democracy",q:"A major limit on Athenian democracy was that:",o:["Only a minority of the population counted as citizens","Citizens could not vote directly","The king could veto assembly decisions","Laws were unwritten and secret"],a:0,e:"Women, enslaved people, and foreign-born residents were excluded, so 'rule by the people' meant a narrow slice of them."},
+
+    {t:"prelight",q:"For most Europeans before the Enlightenment, social position was determined mainly by:",o:["Birth","Formal examinations","Popular election","Military enlistment"],a:0,e:"Status was inherited and mobility was rare; tradition, religion, and the nobility set the terms of life."},
+    {t:"prelight",q:"Which best describes political life for the common person before the Enlightenment?",o:["Almost no voice in government and heavy tax burdens","Regular participation in local elections","Guaranteed legal protections against the crown","Free public education and civil liberties"],a:0,e:"Commoners paid the most and decided the least — the imbalance Enlightenment ideas would attack."},
+
+    {t:"estates",q:"Roughly what share of the population made up the Third Estate?",o:["About 97%","About 50%","About 25%","About 3%"],a:0,e:"The overwhelming majority — peasants, workers, and the bourgeoisie — held the least power and paid the most tax."},
+    {t:"estates",q:"The First Estate consisted of the clergy and made up roughly:",o:["1% of the population","10%","25%","40%"],a:0,e:"A tiny group, yet exempt from most taxes and holding substantial land and influence."},
+    {t:"estates",q:"Which group belonged to the Second Estate?",o:["The nobility","The clergy","Urban laborers","The bourgeoisie"],a:0,e:"Nobles, roughly 2% of the population, held political and military privilege and paid little or no tax."},
+    {t:"estates",q:"The central injustice of the estate system was that:",o:["About 3% of people held nearly all privilege while about 97% carried the tax burden","Nobles paid the highest tax rates","Clergy were barred from owning land","The middle class controlled the government"],a:0,e:"Privilege and burden ran in opposite directions, which is exactly what Enlightenment critiques targeted."},
+    {t:"estates",q:"The bourgeoisie — merchants, lawyers, and professionals — belonged to which estate?",o:["The Third Estate","The First Estate","The Second Estate","No estate at all"],a:0,e:"Though often wealthy and educated, they were legally commoners, which fueled their resentment of noble privilege."},
+
+    {t:"ideas",q:"Enlightenment thinkers argued that the best guide to understanding society was:",o:["Reason","Tradition","Royal decree","Superstition"],a:0,e:"Reason replaced inherited authority as the test of whether an institution deserved to exist."},
+    {t:"ideas",q:"'Natural rights' means rights that:",o:["People are born with and that government must protect","Are granted by the king as a favor","Belong only to nobles and clergy","Exist only once written into law"],a:0,e:"Because they precede government, a government that violates them loses its justification."},
+    {t:"ideas",q:"The 'social contract' describes:",o:["An agreement in which people give up some freedom for government that serves them","A treaty between two monarchs","A church document defining divine right","A trade agreement among merchants"],a:0,e:"It relocates the source of political authority from God to an agreement among the governed."},
+    {t:"ideas",q:"'Consent of the governed' directly contradicts which idea?",o:["Divine Right of Kings","Separation of powers","Natural law","Religious tolerance"],a:0,e:"If authority flows up from the people, it cannot also flow down from God to the king alone."},
+    {t:"ideas",q:"Enlightenment belief in 'progress' held that:",o:["Society can be improved through reason, science, and education","The past was always superior to the present","Change should be avoided to preserve order","Only divine intervention can improve human life"],a:0,e:"This optimism is what made reform seem possible rather than presumptuous."},
+
+    {t:"philosophers",q:"Who described life in the state of nature as 'solitary, poor, nasty, brutish, and short'?",o:["Thomas Hobbes","John Locke","Voltaire","Rousseau"],a:0,e:"Hobbes used that bleak picture to argue people need a strong sovereign to escape chaos."},
+    {t:"philosophers",q:"John Locke argued that people possess natural rights to:",o:["Life, liberty, and property","Wealth, faith, and obedience","Land, title, and rank","Silence, safety, and submission"],a:0,e:"Locke added that if a government fails to protect these rights, the people may replace it — language echoed in the Declaration of Independence."},
+    {t:"philosophers",q:"Montesquieu's central contribution to political thought was:",o:["Dividing government into separate branches to prevent tyranny","The idea of the general will","Abolishing the death penalty","Equal education for women"],a:0,e:"His branch structure became the architecture of the US Constitution."},
+    {t:"philosophers",q:"Rousseau's 'general will' refers to:",o:["The collective will of the people as the only legitimate basis of authority","The monarch's personal judgment","The consensus of the clergy","A majority vote of property owners"],a:0,e:"Rousseau also held that people are naturally good but corrupted by unjust institutions."},
+    {t:"philosophers",q:"Mary Wollstonecraft argued that women appeared inferior to men because they were:",o:["Denied equal education","Naturally less capable","Barred from marriage contracts","Excluded from the Third Estate"],a:0,e:"A Vindication of the Rights of Woman treats education as the lever that would close the gap."},
+    {t:"philosophers",q:"Voltaire is most associated with defending:",o:["Freedom of speech and religious tolerance","Absolute monarchy","Prison reform","Heliocentrism"],a:0,e:"He used satire relentlessly against censorship, intolerance, and abuses of church authority."},
+    {t:"philosophers",q:"Cesare Beccaria argued that punishment should be:",o:["Proportional to the crime and aimed at deterrence, not torture or cruelty","Public, painful, and severe to frighten others","Decided personally by the monarch","Identical for every offense"],a:0,e:"On Crimes and Punishments opposed torture and the death penalty and shaped modern criminal justice."},
+    {t:"philosophers",q:"Which philosopher's ideas most support a strong, even absolute, central authority?",o:["Hobbes","Locke","Rousseau","Wollstonecraft"],a:0,e:"Hobbes shares the social-contract framework with the others but reaches the opposite conclusion about how much power the sovereign needs."},
+    {t:"philosophers",q:"A government that abuses its power may be overthrown by the people. Whose argument is this?",o:["Locke","Hobbes","Beccaria","Voltaire"],a:0,e:"For Locke the contract is conditional: protection of rights is the price of obedience."},
+
+    {t:"science",q:"The scientific method bases conclusions primarily on:",o:["Observation and experiment","Ancient authority","Church doctrine","Royal decree"],a:0,e:"Evidence replaced inherited authority as the test of truth — the same move Enlightenment thinkers later made in politics."},
+    {t:"science",q:"Copernicus and Galileo challenged the church-backed view by arguing that:",o:["The Earth orbits the sun","The Earth is the center of the universe","The planets move in perfect circles by divine will","Motion requires no explanation"],a:0,e:"Heliocentrism showed that a long-accepted authority could simply be wrong, which was the more dangerous lesson."},
+    {t:"science",q:"Newton's laws mattered to Enlightenment thinkers because they showed that:",o:["The universe follows knowable, rational laws","Faith is the only path to knowledge","Nature is fundamentally unpredictable","Mathematics cannot describe motion"],a:0,e:"If nature has discoverable laws, thinkers reasoned, society and government should have them too."},
+    {t:"science",q:"How did the Scientific Revolution most undermine absolute rule?",o:["It taught people to question established authority using reason and evidence","It gave monarchs new weapons","It made the church the sole source of truth","It proved divine right mathematically"],a:0,e:"The method transferred: reasoning applied to the heavens was soon applied to kings."},
+    {t:"science",q:"The Scientific Revolution shifted the basis of knowledge away from:",o:["Ancient texts and religious authority","Laboratory experiments","Mathematical proof","Direct observation"],a:0,e:"Aristotle and Ptolemy had been accepted largely because they were old and endorsed, not because they had been tested."},
+    {t:"science",q:"Which sequence best describes the scientific method?",o:["Observe, hypothesize, experiment, conclude","Believe, decree, enforce, record","Read, memorize, recite, accept","Assume, publish, defend, ignore"],a:0,e:"Each step is answerable to evidence, so a conclusion can always be overturned by a better test."}
+  ];
+
+  // ---------- state ----------
+  var picked = {}, quiz = [], idx = 0, score = 0, missed = [];
+  TOPICS.forEach(function(t){ picked[t.id] = true; });
+
+  var $ = function(id){ return document.getElementById(id); };
+  function show(id){ ["setup","loading","quiz","results"].forEach(function(s){ $(s).classList.toggle("hidden", s !== id); }); }
+  function shuffle(a){ a = a.slice(); for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+  // topic chips
+  var chipBox = $("topics");
+  TOPICS.forEach(function(t){
+    var b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.textContent = t.label;
+    b.setAttribute("aria-pressed","true");
+    b.onclick = function(){
+      picked[t.id] = !picked[t.id];
+      b.setAttribute("aria-pressed", String(picked[t.id]));
+      $("start").disabled = TOPICS.every(function(x){ return !picked[x.id]; });
+    };
+    chipBox.appendChild(b);
+  });
+
+  function chosen(){ return TOPICS.filter(function(t){ return picked[t.id]; }); }
+
+  // ---------- question sourcing ----------
+  function fromBank(n){
+    var ids = {}; chosen().forEach(function(t){ ids[t.id] = true; });
+    var pool = BANK.filter(function(q){ return ids[q.t]; });
+    if (!pool.length) pool = BANK;
+    return shuffle(pool).slice(0, n).map(function(q){
+      var opts = q.o.map(function(text,i){ return { text:text, ok: i === q.a }; });
+      opts = shuffle(opts);
+      return { q:q.q, options:opts, why:q.e };
+    });
+  }
+
+  function build(n){
+    show("loading");
+    // Small delay purely so the loading state is visible; the question bank
+    // below is reshuffled (questions, order, and answer order) every call,
+    // so no two rounds play out identically.
+    setTimeout(function(){ launch(fromBank(n)); }, 350);
+  }
+
+  function note(msg){ $("setupNote").textContent = msg; }
+
+  function launch(qs){
+    quiz = qs; idx = 0; score = 0; missed = [];
+    show("quiz"); render();
+  }
+
+  // ---------- rendering ----------
+  function render(){
+    var q = quiz[idx];
+    var meter = $("meter"); meter.innerHTML = "";
+    quiz.forEach(function(_, i){
+      var d = document.createElement("div");
+      d.className = "tick" + (i < idx ? " done" : i === idx ? " now" : "");
+      meter.appendChild(d);
+    });
+    $("qcount").textContent = "Question " + (idx+1) + " of " + quiz.length + " · Score " + score;
+    $("qtext").textContent = q.q;
+    $("verdict").classList.add("hidden");
+    $("after").classList.add("hidden");
+    $("next").textContent = (idx === quiz.length - 1) ? "See results" : "Next question";
+
+    var box = $("opts"); box.innerHTML = "";
+    q.options.forEach(function(o, i){
+      var b = document.createElement("button");
+      b.className = "opt"; b.type = "button";
+      var m = document.createElement("span"); m.className = "mark"; m.textContent = "ABCD"[i];
+      var s = document.createElement("span"); s.textContent = o.text;
+      b.appendChild(m); b.appendChild(s);
+      b.onclick = function(){ answer(i); };
+      box.appendChild(b);
+    });
+  }
+
+  function answer(pick){
+    var q = quiz[idx];
+    var right = q.options.findIndex(function(o){ return o.ok; });
+    var ok = pick === right;
+    if (ok) score++; else missed.push(q);
+
+    Array.prototype.forEach.call($("opts").children, function(b, i){
+      b.disabled = true;
+      if (i === right) b.classList.add("correct");
+      else if (i === pick) b.classList.add("picked-wrong");
+      else b.classList.add("dim");
+    });
+
+    $("vhead").textContent = ok ? "Correct." : "Not quite — it's " + "ABCD"[right] + ".";
+    $("vhead").className = ok ? "yes" : "no";
+    $("vbody").textContent = q.why || "";
+    $("verdict").classList.remove("hidden");
+    $("after").classList.remove("hidden");
+    $("qcount").textContent = "Question " + (idx+1) + " of " + quiz.length + " · Score " + score;
+    $("next").focus();
+  }
+
+  function finish(){
+    show("results");
+    var answered = score + missed.length;
+    $("scoreNum").textContent = score;
+    $("scoreOf").textContent = " / " + answered;
+    var pct = answered ? Math.round(score / answered * 100) : 0;
+    $("scoreLine").textContent = pct >= 90 ? "You know this cold. Skim the ones below and you're set."
+      : pct >= 75 ? "Solid. Tighten up the misses below."
+      : pct >= 50 ? "Halfway there — the misses below are where the points are."
+      : "Worth a re-read of the study guide before the next round.";
+
+    var list = $("misses"); list.innerHTML = "";
+    missed.forEach(function(q){
+      var li = document.createElement("li");
+      var p1 = document.createElement("p"); p1.className = "mq"; p1.textContent = q.q;
+      var p2 = document.createElement("p"); p2.className = "ma";
+      var sp = document.createElement("span");
+      sp.textContent = q.options.filter(function(o){ return o.ok; })[0].text;
+      p2.appendChild(sp);
+      if (q.why){ p2.appendChild(document.createTextNode(" — " + q.why)); }
+      li.appendChild(p1); li.appendChild(p2); list.appendChild(li);
+    });
+    $("retryMissed").style.display = missed.length ? "" : "none";
+  }
+
+  function poolSize(){
+    var ids = {}; chosen().forEach(function(t){ ids[t.id] = true; });
+    var pool = BANK.filter(function(q){ return ids[q.t]; });
+    return pool.length ? pool.length : BANK.length;
+  }
+
+  // ---------- controls ----------
+  $("start").onclick = function(){
+    var n = parseInt($("count").value, 10);
+    var avail = poolSize();
+    note(avail < n
+      ? "Only " + avail + " question" + (avail === 1 ? "" : "s") + " available for the topics you picked — showing all of them."
+      : "");
+    build(n);
+  };
+  $("next").onclick = function(){
+    if (idx === quiz.length - 1){ finish(); } else { idx++; render(); }
+  };
+  $("quit").onclick = finish;
+  $("again").onclick = function(){ build(parseInt($("count").value, 10)); };
+  $("retryMissed").onclick = function(){ launch(shuffle(missed)); };
+  $("back").onclick = function(){ show("setup"); };
+
+  note("Questions are pulled from a bank of " + BANK.length + " practice items and reshuffled every round, so restarting rarely repeats the same test.");
+})();
+</script>
+</body>
+</html>
