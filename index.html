@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kinematics &amp; Circular Motion — Study Guide &amp; Problem Generator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  :root{
+    --paper: #eef3f2; --grid: #c9d6d4; --ink: #1e2b3a; --ink-soft: #33455a;
+    --navy: #1e2b3a; --teal: #2f6f6b; --teal-deep: #204c49;
+    --amber: #c98a2c; --amber-deep: #96631a; --rule: #b9c8c6; --card: #f8faf9;
+  }
+  html{ scroll-behavior: smooth; }
+  body{
+    background-color: var(--paper);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px; color: var(--ink); font-family:'Newsreader',serif; font-size:1.1rem; line-height:1.7;
+  }
+  .mono{ font-family:'JetBrains Mono',monospace; }
+  h1,h2,h3,.display{ font-family:'Newsreader',serif; font-optical-sizing:auto; }
+  .card{ background: var(--card); border:1px solid var(--rule); }
+  .section-number{ font-family:'JetBrains Mono',monospace; color: var(--teal); }
+  .accent-line{ background: var(--amber); }
+  .formula-box{ background:#fbf6ec; border:1px solid #e3cd9a; }
+  details>summary{ cursor:pointer; list-style:none; }
+  details>summary::-webkit-details-marker{ display:none; }
+  .chevron{ transition: transform .2s ease; }
+  details[open] .chevron{ transform: rotate(90deg); }
+  .navlink{ border-left:2px solid transparent; transition: all .15s ease; }
+  .navlink.active{ border-left:2px solid var(--teal); color:var(--teal-deep); background:rgba(47,111,107,.08); }
+  ::selection{ background:#f3d9a3; }
+  table.ref-table th, table.ref-table td{ border:1px solid var(--rule); padding:.6rem .85rem; vertical-align:top; }
+  table.ref-table th{ background:#e4ece9; text-align:left; }
+  .chip{ font-family:'JetBrains Mono',monospace; font-size:.78rem; border:1px solid var(--rule); background:var(--card); color:var(--ink-soft); transition:all .15s ease; }
+  .chip:hover{ border-color:var(--teal); color:var(--teal-deep); }
+  .chip.active{ background:var(--teal); border-color:var(--teal); color:#fdfdfb; }
+  .btn-primary{ background:var(--teal); color:#fdfdfb; transition:background .15s ease; }
+  .btn-primary:hover{ background:var(--teal-deep); }
+  .btn-ghost{ border:1px solid var(--rule); color:var(--ink-soft); transition:all .15s ease; }
+  .btn-ghost:hover{ border-color:var(--amber); color:var(--amber-deep); }
+  #answer-panel{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  #answer-panel.open{ max-height:3000px; }
+  .callout{ background:#fbf6ec; border:1px solid #e3cd9a; border-left:4px solid var(--amber); }
+  .callout ul{ list-style:disc; padding-left:1.4rem; color:var(--ink-soft); }
+  .callout ol{ list-style:decimal; padding-left:1.4rem; color:var(--ink-soft); }
+  .callout p{ color:var(--ink-soft); margin-bottom:.6rem; }
+  main .card{ padding:1.5rem 1.75rem; }
+  main h2{ font-size:1.85rem !important; }
+  main h3{ font-size:1.1rem; }
+  span.mono{ font-size:.88em; background:rgba(47,111,107,.09); padding:.05em .35em; border-radius:3px; }
+  .card li, .callout li{ margin-bottom:.45rem; }
+  .list-inside{ list-style-position:outside !important; padding-left:1.5rem; }
+  details>div{ border-left:3px solid var(--teal); padding-left:1.1rem; margin-left:.25rem; }
+  details>div>p{ margin-bottom:.55rem; }
+  .tbl-wrap{ overflow-x:auto; }
+  .tag{ font-family:'JetBrains Mono',monospace; font-size:.68rem; padding:.15rem .5rem; border-radius:999px; display:inline-block; margin-right:.35rem; }
+  .tag-memorize{ background:#f4d9d4; color:#8a3325; }
+  .tag-understand{ background:#d7e6df; color:#215b45; }
+  .tag-technique{ background:#dde4f0; color:#2c4a7c; }
+  .diff-basic{ color:#215b45; } .diff-med{ color:#96631a; } .diff-hard{ color:#8a3325; }
+  input.ans-input{ border:1px solid var(--rule); background:#fff; padding:.4rem .6rem; font-family:'JetBrains Mono',monospace; }
+  .katex{ font-size:1.22em; }
+  .generated-math{ font-family:'Newsreader',serif; }
+  .formula-box .katex{ font-size:1.32em; }
+  .katex-display{ margin:.5em 0; }
+  .formula-box .katex-display{ margin:.3em 0; }
+  #feedback.correct{ color:#215b45; font-weight:600; }
+  #feedback.incorrect{ color:#8a3325; font-weight:600; }
+</style>
+</head>
+<body class="min-h-screen">
+
+<header class="border-b-2 border-[var(--rule)] bg-[var(--paper)]/95 backdrop-blur sticky top-0 z-30">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-baseline justify-between flex-wrap gap-2">
+    <div>
+      <p class="mono text-xs tracking-wide text-[var(--teal-deep)]">AP PHYSICS 1 / PHYSICS HONORS</p>
+      <h1 class="text-2xl md:text-3xl font-semibold text-[var(--navy)]">Kinematics &amp; Circular Motion — Complete Guide</h1>
+    </div>
+    <p class="mono text-xs text-[var(--ink-soft)] max-w-sm text-right hidden sm:block">Built from your tests, quizzes, worksheets, and answer keys — every method traced back to a real problem, plus an infinite practice generator.</p>
+  </div>
+</header>
+
+<div class="max-w-6xl mx-auto px-6 flex gap-10">
+  <nav id="side-nav" class="hidden lg:block w-60 shrink-0 py-8 sticky top-24 self-start max-h-[85vh] overflow-y-auto">
+    <p class="mono text-xs text-[var(--ink-soft)] mb-2">CONTENTS</p>
+    <ul class="text-sm space-y-1">
+      <li><a href="#howto" class="navlink block px-3 py-1.5">How to use this guide</a></li>
+      <li><a href="#kin1d" class="navlink block px-3 py-1.5">1 · 1-D Kinematics</a></li>
+      <li><a href="#proj" class="navlink block px-3 py-1.5">2 · Projectile Motion</a></li>
+      <li><a href="#relvel" class="navlink block px-3 py-1.5">3 · Relative Velocity</a></li>
+      <li><a href="#circ" class="navlink block px-3 py-1.5">4 · Circular Motion</a></li>
+      <li><a href="#reference" class="navlink block px-3 py-1.5">5 · Quick Reference Sheet</a></li>
+      <li><a href="#concept" class="navlink block px-3 py-1.5">6 · Conceptual Question Bank</a></li>
+      <li><a href="#practice" class="navlink block px-3 py-1.5">7 · Practice Generator</a></li>
+      <li><a href="#checklist" class="navlink block px-3 py-1.5">8 · Test-Day Checklist</a></li>
+    </ul>
+  </nav>
+
+  <main class="flex-1 py-8 space-y-16 min-w-0">
+
+    <section id="howto" class="card rounded-sm p-6 scroll-mt-24">
+      <p class="text-[var(--ink-soft)]">This guide covers the four kinematics topics that appear across your tests, quizzes and worksheets: <strong>1-D kinematics</strong>, <strong>2-D projectile motion</strong>, <strong>relative velocity</strong> (vector addition/subtraction), and <strong>circular motion</strong> (uniform and combined tangential+centripetal). Every worked example below uses numbers taken directly from your materials and is checked against the official answer key. Each section is tagged so you know what to <span class="tag tag-memorize">memorize</span> cold, what to <span class="tag tag-understand">understand</span> conceptually, and what is just a <span class="tag tag-technique">useful technique</span>. Section 7 generates unlimited new practice problems with instant grading and full solutions.</p>
+    </section>
+
+    <!-- =============== 1. 1D KINEMATICS =============== -->
+    <section id="kin1d" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">01</span><h2 class="text-2xl font-semibold">One-Dimensional Kinematics</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Key formulas <span class="tag tag-memorize">memorize</span></h3>
+        <div class="grid sm:grid-cols-2 gap-2 mono text-sm">
+          <div class="formula-box rounded-sm px-3 py-2">$$v_f = v_o + at$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$\Delta x = v_o t + \tfrac{1}{2}at^2$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$\Delta x = \tfrac{1}{2}(v_f+v_o)t$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$v_f^2 = v_o^2 + 2a\Delta x$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$\Delta x = v_f t - \tfrac{1}{2}at^2$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$g = 9.80\ \text{m/s}^2\ [D]$$</div>
+        </div>
+        <p class="text-sm text-[var(--ink-soft)] mt-3">These are the "big five" constant-acceleration equations. Each one is missing exactly one of the five variables (\(v_o, v_f, a, t, \Delta x\)) — pick the equation that's missing the variable you don't know and don't need.</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">How to recognize this problem type <span class="tag tag-understand">understand</span></h3>
+        <p class="text-[var(--ink-soft)]">Motion is confined to <em>one line</em> (a car on a road, a ball thrown straight up/down, a cart on a ramp) and the acceleration is <strong>constant</strong> throughout the interval you're analyzing. If a problem changes acceleration partway through (like a car that speeds up then stops accelerating), you must split it into separate constant-acceleration segments.</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Step-by-step strategy <span class="tag tag-technique">technique</span></h3>
+        <ol class="list-decimal list-inside space-y-1 text-[var(--ink-soft)]">
+          <li>Pick a positive direction once, and stick with it. Assign a sign to every given vector quantity (velocity, acceleration, displacement).</li>
+          <li>List the five variables \(v_o, v_f, a, t, \Delta x\). Fill in the ones you know; mark the one you want; identify the one you don't know and don't need.</li>
+          <li>Choose the single equation missing that unneeded variable.</li>
+          <li>Solve algebraically before plugging in numbers when possible — it catches sign errors.</li>
+          <li>Check the sign and reasonableness of your answer against the physical picture (e.g., a decelerating car shouldn't have a negative time).</li>
+        </ol>
+      </div>
+
+      <div class="callout rounded-sm p-5 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--amber-deep)]">Common mistakes</h3>
+        <ul>
+          <li><strong>Average speed ≠ average velocity</strong> whenever the object reverses direction. Average velocity uses net displacement; average speed uses <em>total distance traveled</em>. If the object reverses, you must split the motion at the instant \(v=0\) and add up the distance from each leg separately.</li>
+          <li>Forgetting that \(g\) always points down — if "up" is your positive direction, \(a=-9.80\,\mathrm{m/s^2}\) the entire flight, even while the object is still rising.</li>
+          <li>Using \(\Delta x=\tfrac12(v_f+v_o)t\) when acceleration is <em>not</em> constant — this equation is only valid for constant acceleration.</li>
+          <li>Mixing sign conventions mid-problem (e.g. calling "right" positive in one line and "left" positive two lines later).</li>
+        </ul>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — direction reversal (multi-part, from your SchoolLoop practice test)</p>
+        <p class="mb-3">A car changes velocity from an initial value of 12.0 m/s to the right to a final value of 5.00 m/s to the left. The net displacement of the car during this motion is 25.0 m [R]. Find (a) the time, (b) the acceleration, (c) the average velocity, (d) the average speed.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>Recognize:</strong> constant acceleration, but the velocity changes sign — the car must slow down, stop, then speed up going backward. That's the signal average speed ≠ average velocity here.</p>
+            <p><strong>Setup:</strong> right = positive. $$v_o=+12.0\text{ m/s},\quad v_f=-5.00\text{ m/s},\quad \Delta x = +25.0\text{ m}$$</p>
+            <p>(a) Neither \(a\) nor \(t\) is known, but the equation missing \(a\) is $$\Delta x=\tfrac12(v_f+v_o)t \Rightarrow t=\frac{2\Delta x}{v_f+v_o}=\frac{2(25.0)}{12.0+(-5.00)}=\frac{50.0}{7.00}=7.14\text{ s}$$</p>
+            <p>(b) Now use $$a=\frac{v_f-v_o}{t}=\frac{-5.00-12.0}{7.14}=-2.38\text{ m/s}^2 \Rightarrow 2.38\text{ m/s}^2\text{ [L]}$$</p>
+            <p>(c) Average velocity is just net displacement over time: $$\bar v = \frac{\Delta x}{t}=\frac{25.0}{7.14}=3.50\text{ m/s [R]}$$</p>
+            <p>(d) For average <em>speed</em> we need <em>total distance</em>. The car momentarily stops (<span class="mono">\(v=0\)</span>) before reversing. Distance while slowing from 12.0 to 0: $$x_1=\frac{v_o^2}{2|a|}=\frac{12.0^2}{2(2.38)}=30.25\text{ m [R]}$$ Distance while speeding up from 0 to 5.00 m/s [L]: $$x_2=\frac{v_f^2}{2|a|}=\frac{5.00^2}{2(2.38)}=5.25\text{ m [L]}$$ Total distance = 30.25 + 5.25 = 35.5 m, so $$\text{avg speed}=\frac{35.5}{7.14}=4.97\text{ m/s}$$</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">t = 7.14 s, a = 2.38 m/s² [L], v̄ = 3.50 m/s [R], avg speed = 4.97 m/s</p>
+            <p class="text-sm"><strong>Why the answer makes sense:</strong> avg speed (4.97) is bigger than the magnitude of avg velocity (3.50) — exactly what must happen whenever a trip includes backtracking, since distance ≥ |displacement| always.</p>
+            <p class="text-sm"><strong>Common mistake avoided:</strong> a student who computes avg speed as |Δx|/t = 3.50 m/s has silently assumed the car never reversed direction.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — vertical free fall from a cliff</p>
+        <p class="mb-3">A boy on a cliff throws a rock straight up at <span class="mono">\(t=0\)</span> with initial speed 10.0 m/s. Find the rock's speed and the time when it is 45.0 m below its starting point.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>Setup:</strong> up = positive. $$v_o=+10.0\text{ m/s},\ a=-9.80\text{ m/s}^2,\ \Delta y = -45.0\text{ m (below start)}$$</p>
+            <p>Speed first (don't need \(t\)): $$v_f^2=v_o^2+2a\Delta y = (10.0)^2+2(-9.80)(-45.0)=100+882=982$$ $$v_f=\pm31.3\text{ m/s}$$ Take the negative root since the rock is moving downward when it's below the start: <span class="mono">\(v_f = −31.3 m/s\)</span>, speed = 31.3 m/s.</p>
+            <p>Time: $$v_f=v_o+at \Rightarrow t=\frac{v_f-v_o}{a}=\frac{-31.3-10.0}{-9.80}=4.22\text{ s}$$</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">speed = 31.3 m/s, t = 4.22 s</p>
+            <p class="text-sm"><strong>Common mistake:</strong> taking the <em>positive</em> square root for <span class="mono">\(v_f\)</span>. The ± from squaring always needs a physical argument (direction of travel) to pick the right sign.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6">
+        <h3 class="font-semibold mb-3 text-[var(--teal-deep)]">Practice: basic → challenging</h3>
+        <div class="space-y-4">
+          <div><p class="diff-basic text-sm mono mb-1">BASIC</p><p>A car starts at rest and accelerates at 3.00 m/s² for 6.00 s. Find its final velocity and displacement.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">v_f = 18.0 m/s; Δx = ½(3.00)(6.00)² = 54.0 m.</p></details></div>
+          <div><p class="diff-med text-sm mono mb-1">MEDIUM</p><p>A train decelerates from 30.0 m/s to 10.0 m/s over 200 m. Find its acceleration and the time taken.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">a = (10.0²−30.0²)/(2·200) = −2.00 m/s²; t = (10.0−30.0)/(−2.00) = 10.0 s.</p></details></div>
+          <div><p class="diff-hard text-sm mono mb-1">CHALLENGING</p><p>A ball is dropped from a height and, in the last second before hitting the ground, falls 45% of the total height. Find the total height. (Hint: let total time be T; set up the height fallen in time T−1 vs T.)</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">H=½gT². Height fallen by T−1 is ½g(T−1)². Setting H−½g(T−1)²=0.45H gives 0.55 = 1−(T−1)²/T² → (T−1)/T=√0.55=0.7416 → T=1/(1−0.7416)=3.87 s → H=½(9.80)(3.87)²≈73.4 m.</p></details></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== 2. PROJECTILE MOTION =============== -->
+    <section id="proj" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">02</span><h2 class="text-2xl font-semibold">Two-Dimensional (Projectile) Motion</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Key idea <span class="tag tag-memorize">memorize</span></h3>
+        <p class="text-[var(--ink-soft)] mb-2">Horizontal and vertical motion are <strong>independent</strong> and share only one variable: time.</p>
+        <div class="grid sm:grid-cols-2 gap-2 mono text-sm">
+          <div class="formula-box rounded-sm px-3 py-2">Horizontal (a=0): $$v_x = v_{ox}\ \ (\text{constant})$$ $$x = v_{ox}t$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">Vertical (a=−g): $$v_{fy}=v_{oy}-gt$$ $$y=v_{oy}t-\tfrac12 gt^2$$ $$v_{fy}^2=v_{oy}^2-2g\,y$$</div>
+        </div>
+        <p class="text-sm text-[var(--ink-soft)] mt-3">Decompose the launch velocity: $$v_{ox}=v_o\cos\theta,\qquad v_{oy}=v_o\sin\theta$$ where θ is measured from the horizontal. Speed at any instant: $$v=\sqrt{v_x^2+v_y^2}$$</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">How to recognize it <span class="tag tag-understand">understand</span></h3>
+        <p class="text-[var(--ink-soft)]">Any object launched into the air with a velocity that has both a horizontal and vertical component (or purely horizontal off a height), moving only under gravity (no air resistance). Cannons, footballs, thrown balls, arrows, bundles dropped from planes.</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Step-by-step strategy <span class="tag tag-technique">technique</span></h3>
+        <ol class="list-decimal list-inside space-y-1 text-[var(--ink-soft)]">
+          <li>Sketch axes. Pick up/right (or a convenient compass direction) as positive.</li>
+          <li>Decompose the initial velocity into \(v_{ox}\) and \(v_{oy}\).</li>
+          <li>Write the horizontal and vertical equations <em>separately</em>, both in terms of the same \(t\).</li>
+          <li>Use whichever piece of given information (a landing height, a landing angle, a specific time) to solve for \(t\) first — almost every projectile problem reduces to "find t, then everything else follows."</li>
+          <li>Recombine components (Pythagorean theorem + inverse tangent) only at the very end, when the question asks for a resultant speed or direction.</li>
+        </ol>
+      </div>
+
+      <div class="callout rounded-sm p-5 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--amber-deep)]">Common mistakes &amp; shortcuts</h3>
+        <ul>
+          <li><strong>Never</strong> use a horizontal-motion equation with \(g\) in it, or a vertical equation with constant velocity — the two axes never mix inside one equation.</li>
+          <li>At the top of the trajectory, <span class="mono">\(v_y = 0\)</span> but \(v_x\) is <em>not</em> zero — this is also where the speed is at its minimum (shortcut for "minimum speed of flight" questions, provided the object doesn't hit the ground before reaching the top).</li>
+          <li><strong>Landing at 45° with equal-magnitude components</strong> is a common trick: it tells you \(|v_x| = |v_{fy}|\) at impact, giving you a second equation instantly.</li>
+          <li><strong>Symmetric range shortcut:</strong> a projectile launched and landing at the <em>same height</em> at angle θ has the same range as one launched at \((90^\circ-\theta)\), since \(\sin(2\theta)=\sin(2(90^\circ-\theta))\). Only valid for equal launch/landing height.</li>
+          <li>Increasing the launch angle above 45° (same speed, same height) <em>decreases</em> range but <em>increases</em> flight time — don't assume "steeper is always farther."</li>
+          <li>Two objects dropped/launched from the same height with the same initial <em>vertical</em> velocity (even if one also moves horizontally) hit the ground at the <strong>same time</strong> — horizontal motion never affects fall time.</li>
+        </ul>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — launch from a roof, two-part (from your test on Ch. 3 &amp; 6)</p>
+        <p class="mb-3">A quarterback on a roof throws a pass at <span class="mono">\(t=0\)</span> with initial velocity 20.0 m/s [S30°U] (30° above horizontal, horizontal part pointing south). (a) Find the speed at t = 2.5 s. (b) The ball lands at 45°, so the horizontal and vertical speed components are equal in magnitude at impact. At what height y above the ground did the ball leave his hand?</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>Decompose:</strong> $$v_{ox}=20.0\cos30°=17.3\text{ m/s [S]}\ (\text{constant})$$ $$v_{oy}=20.0\sin30°=10.0\text{ m/s [U]}$$</p>
+            <p>(a) At t = 2.5 s: $$v_x=17.3\text{ m/s (unchanged)}$$ $$v_y=v_{oy}-gt=10.0-9.80(2.5)=-14.5\text{ m/s (14.5 m/s down)}$$ $$v=\sqrt{17.3^2+14.5^2}=\sqrt{300+210}=\sqrt{510}=22.6\text{ m/s}$$</p>
+            <p>(b) Landing at 45° with equal components means \(v_{fy}=-17.3\,\mathrm{m/s}\) (must equal \(|v_x|\) in magnitude). Find the time this occurs: $$-17.3=10.0-9.80t\Rightarrow t=\frac{10.0+17.3}{9.80}=2.79\text{ s}$$ Now find the vertical displacement over that time (this equals minus the launch height above the ground, since it starts at height y and ends at the ground): $$\Delta y=v_{oy}t-\tfrac12 gt^2=10.0(2.79)-4.90(2.79)^2=27.9-38.1=-10.2\text{ m}$$ The ball fell 10.2 m below the roof, so it left the quarterback's hand <span class="mono">\(y = 10.2 m\)</span> above the ground.</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">v(2.5s) = 22.6 m/s;  y = 10.2 m</p>
+            <p class="text-sm"><strong>Why it makes sense:</strong> the ball is still gaining downward speed after 2.5s (it hasn't landed yet, since landing requires 2.79 s), so a speed of 22.6 m/s that's larger than the 20.0 m/s launch speed is reasonable — it has fallen further than it rose.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — plateau launch, solve for range (from your Kinematics test)</p>
+        <p class="mb-3">A gun on top of a 200 m plateau fires a projectile at 150 m/s [N35°U]. It lands at the bottom of the plateau (200 m below). Find the range and the minimum speed during flight.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p>$$v_{ox}=150\cos35°=122.9\text{ m/s},\quad v_{oy}=150\sin35°=86.0\text{ m/s}$$</p>
+            <p>Vertical equation with <span class="mono">\(Δy = −200 m\)</span>: $$-200=86.0t-4.90t^2 \Rightarrow 4.90t^2-86.0t-200=0$$ Quadratic formula (take the positive root — the physically meaningful one): $$t=\frac{86.0+\sqrt{86.0^2+4(4.90)(200)}}{2(4.90)}=19.6\text{ s}$$</p>
+            <p>Range: $$x=v_{ox}t=122.9(19.6)=2.41\times10^3\text{ m}$$</p>
+            <p>Minimum speed occurs at the top of the arc, where \(v_y=0\), so speed = \(v_{ox} = 123\) m/s (only valid because the projectile does reach and pass through the top of its arc before landing, which it does here since it's launched upward).</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">Range = 2.41 × 10³ m;  minimum speed = 123 m/s</p>
+            <p class="text-sm"><strong>Common mistake avoided:</strong> taking the <em>negative</em> root of the quadratic, which gives a negative (meaningless) time.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6">
+        <h3 class="font-semibold mb-3 text-[var(--teal-deep)]">Practice: basic → challenging</h3>
+        <div class="space-y-4">
+          <div><p class="diff-basic text-sm mono mb-1">BASIC</p><p>A ball is launched horizontally at 12.0 m/s from a 20.0 m tall ledge. Find the time to land and the horizontal range.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">t=√(2·20.0/9.80)=2.02 s; range = 12.0(2.02) = 24.2 m.</p></details></div>
+          <div><p class="diff-med text-sm mono mb-1">MEDIUM</p><p>A projectile is launched from level ground at 25.0 m/s at 40.0° above horizontal. Find the max height, flight time, and range.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">v_oy=16.1 m/s → max height = v_oy²/2g = 13.2 m; total flight time = 2v_oy/g = 3.28 s; v_ox=19.2 m/s → range=v_ox·t=62.9 m.</p></details></div>
+          <div><p class="diff-hard text-sm mono mb-1">CHALLENGING</p><p>A cannon fires a projectile at 60.0 m/s [R50°U]. It strikes a canyon wall 50.0 m below its launch height, 400 m horizontally away. Verify this is consistent, and find the magnitude of the total displacement at impact.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">v_ox=38.6 m/s, v_oy=46.0 m/s. t=400/38.6=10.4 s. Δy=46.0(10.4)−4.90(10.4)²=478−530=−52≈−50 m ✓ (consistent). Displacement magnitude=√(400²+50²)=403 m.</p></details></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== 3. RELATIVE VELOCITY =============== -->
+    <section id="relvel" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">03</span><h2 class="text-2xl font-semibold">Relative Velocity &amp; Vector Addition</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Key formula <span class="tag tag-memorize">memorize</span></h3>
+        <div class="formula-box rounded-sm px-4 py-2 mono inline-block mb-2">$$\vec v_{AC} = \vec v_{AB} + \vec v_{BC}$$</div>
+        <p class="text-[var(--ink-soft)]">Read the subscripts like fractions that cancel: velocity of A relative to C = (velocity of A relative to B) + (velocity of B relative to C), where the inner "B"s cancel. Equivalently, to isolate one term, rearrange like ordinary vector algebra, e.g. $$\vec v_{BC}=\vec v_{AC}-\vec v_{AB}$$</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">How to recognize it <span class="tag tag-understand">understand</span></h3>
+        <p class="text-[var(--ink-soft)]">Two frames of reference are involved: a swimmer/boat and a moving current, a plane and wind, or two moving observers describing the same third object differently ("Person X sees Person Y moving at..."). Any time a velocity is described "relative to" something other than the ground, this is the topic.</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Step-by-step strategy <span class="tag tag-technique">technique</span></h3>
+        <ol class="list-decimal list-inside space-y-1 text-[var(--ink-soft)]">
+          <li>Identify the three "actors": usually an object (boat, swimmer, plane, person), a medium (water, air, another moving person), and the ground.</li>
+          <li>Write the vector equation with subscripts so the middle letters cancel: \(\vec v_{\text{object,ground}} = \vec v_{\text{object,medium}} + \vec v_{\text{medium,ground}}\).</li>
+          <li>Break every vector into x/y (e.g. East/North) components — this turns vector addition into simple arithmetic.</li>
+          <li>Solve for the unknown vector's components, then convert back to magnitude (Pythagorean theorem) and direction (inverse tangent) only at the end.</li>
+          <li>For "reach the far bank fastest" or "go straight across" river problems, remember: only the component of velocity <em>perpendicular</em> to the current affects crossing time; the current only causes sideways drift.</li>
+        </ol>
+      </div>
+
+      <div class="callout rounded-sm p-5 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--amber-deep)]">Common mistakes</h3>
+        <ul>
+          <li>Adding vectors by adding magnitudes directly instead of components — only valid if the vectors are parallel.</li>
+          <li>Confusing "swim so that you land directly across" (aim upstream, resultant speed is <em>less</em> than swim speed) with "swim so your resultant speed relative to shore is some value" (a different geometry entirely — solve for the resultant, not the heading, or vice versa, don't assume which is fixed).</li>
+          <li>Sign/direction errors: always draw a compass rose and double check whether "East" is +x and "North" is +y before decomposing.</li>
+          <li>Forgetting that \(\vec v_{AB} = -\vec v_{BA}\) (velocity of A relative to B is the negative of B relative to A).</li>
+        </ul>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — two moving observers (from your test on Ch. 3 &amp; 6)</p>
+        <p class="mb-3">Michael walks at 2.0 m/s [N] relative to the ground. From Julie's point of view (relative to Julie), Michael's velocity is 2.1 m/s [E45°N]. Find Julie's speed relative to the ground.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>Set up the vector equation.</strong> Let M = Michael, J = Julie, G = ground: $$\vec v_{MG}=\vec v_{MJ}+\vec v_{JG} \ \Rightarrow\ \vec v_{JG}=\vec v_{MG}-\vec v_{MJ}$$</p>
+            <p>Take East = +x, North = +y: $$\vec v_{MG}=(0,\ 2.0)$$ $$\vec v_{MJ}=(2.1\cos45°,\ 2.1\sin45°)=(1.48,\ 1.48)$$</p>
+            <p>Subtract: $$\vec v_{JG}=(0-1.48,\ 2.0-1.48)=(-1.48,\ 0.52)$$</p>
+            <p>Magnitude: $$|\vec v_{JG}|=\sqrt{(-1.48)^2+(0.52)^2}=\sqrt{2.19+0.27}=\sqrt{2.46}=1.57\text{ m/s}$$</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">Julie's speed relative to ground = 1.57 m/s (direction [W19°N])</p>
+            <p class="text-sm"><strong>Why it makes sense:</strong> Julie must be moving generally westward relative to the ground, because Michael (who is walking north relative to the ground) appears to Julie to be moving east-of-north — Julie's own motion has to be westward to produce that apparent shift.</p>
+            <p class="text-sm"><strong>Common mistake:</strong> writing \(\vec v_{MG}=\vec v_{JG}+\vec v_{MJ}\) with the wrong sign — always isolate algebraically from the subscript-cancellation equation rather than guessing which vector adds or subtracts.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — river crossing (from your worksheet)</p>
+        <p class="mb-3">Michael Phelps can swim at 2.0 m/s in still water. He swims across a river that flows south at 1.5 m/s and is 2.0 km wide, starting on the west bank. In what direction (relative to the water) must he swim to move straight east, and how long does the crossing take?</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>Key idea:</strong> to end up moving straight east relative to the ground, his velocity relative to the water must have a <em>northward</em> component that exactly cancels the southward current — the current is 1.5 m/s [S], so he needs +1.5 m/s [N] built into his swimming direction.</p>
+            <p>His swim speed relative to water is fixed at 2.0 m/s, so: $$v_{\text{north component}}=1.5\text{ m/s}\Rightarrow \sin\phi=\frac{1.5}{2.0}\Rightarrow \phi = 48.6°$$ measured from east toward north: heading <span class="mono">[E49°N]</span>.</p>
+            <p>East component (this becomes his full ground speed, since north components cancel): $$v_{\text{east}}=\sqrt{2.0^2-1.5^2}=\sqrt{1.75}=1.32\text{ m/s}$$</p>
+            <p>Crossing time uses only the component that actually gets him across (east), and only the crossing distance (2.0 km = 2000 m): $$t=\frac{2000}{1.32}=1.52\times10^3\text{ s} \approx 25\text{ min}$$</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">Heading [E49°N]; t = 1.52 × 10³ s ≈ 25 min</p>
+            <p class="text-sm"><strong>Common mistake:</strong> using the full 2.0 m/s swim speed to compute crossing time — only the component of velocity perpendicular to the bank (east, here) contributes to crossing; the north component is "wasted" canceling the current.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6">
+        <h3 class="font-semibold mb-3 text-[var(--teal-deep)]">Practice: basic → challenging</h3>
+        <div class="space-y-4">
+          <div><p class="diff-basic text-sm mono mb-1">BASIC</p><p>A plane flies at 200 m/s [E] relative to the air. The wind blows at 40 m/s [N]. Find the plane's velocity relative to the ground.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">v=√(200²+40²)=204 m/s, direction [E11°N] (atan(40/200)=11.3°).</p></details></div>
+          <div><p class="diff-med text-sm mono mb-1">MEDIUM</p><p>A boat that can go 4.0 m/s in still water crosses a 100 m wide river with a 3.0 m/s current, aiming straight across (not compensating). Find the resultant speed and the drift downstream.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">resultant speed=√(4²+3²)=5.0 m/s; crossing time=100/4.0=25 s; drift=3.0(25)=75 m downstream.</p></details></div>
+          <div><p class="diff-hard text-sm mono mb-1">CHALLENGING</p><p>To a driver heading [N], a passing train appears to move at 30 m/s [E20°N]. If the train's true (ground) velocity is 25 m/s [E], find the driver's (car's) speed.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">\(\vec v_{\text{train,car}}=(30\cos20°,30\sin20°)=(28.2,10.3)\); \(\vec v_{\text{train,ground}}=(25,0)\); \(\vec v_{\text{car,ground}}=\vec v_{\text{train,ground}}-\vec v_{\text{train,car}}=(25-28.2,\ 0-10.3)=(-3.2,-10.3)\); speed \(=\sqrt{3.2^2+10.3^2}=10.8\) m/s.</p></details></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== 4. CIRCULAR MOTION =============== -->
+    <section id="circ" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">04</span><h2 class="text-2xl font-semibold">Circular Motion (Uniform &amp; Combined)</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Key formulas <span class="tag tag-memorize">memorize</span></h3>
+        <div class="grid sm:grid-cols-2 gap-2 mono text-sm">
+          <div class="formula-box rounded-sm px-3 py-2">$$v=\frac{2\pi r}{T}$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$a_c=\frac{v^2}{r}=\frac{4\pi^2 r}{T^2}$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$\vec a = \vec a_t + \vec a_c$$</div>
+          <div class="formula-box rounded-sm px-3 py-2">$$a=\sqrt{a_t^2+a_c^2}$$</div>
+        </div>
+        <p class="text-sm text-[var(--ink-soft)] mt-3">Centripetal acceleration \(a_c\) always points toward the <em>center</em> of the circular path and changes only the <em>direction</em> of velocity. Tangential acceleration \(a_t\) is along the direction of motion and changes only the <em>speed</em>. The two are always perpendicular, so their resultant magnitude comes from the Pythagorean theorem.</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">How to recognize it <span class="tag tag-understand">understand</span></h3>
+        <p class="text-[var(--ink-soft)]">Anything moving along a curved/circular path: a ball on a string, a car rounding a curve or cresting a hill, a coin on a turntable, an orbiting planet, a pendulum. If speed is changing <em>while</em> the object turns, both \(a_t\) and \(a_c\) exist simultaneously — this is a favorite "trick" test question (see the pendulum example below).</p>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--teal-deep)]">Step-by-step strategy <span class="tag tag-technique">technique</span></h3>
+        <ol class="list-decimal list-inside space-y-1 text-[var(--ink-soft)]">
+          <li>Identify the radius of the actual circular path — for a conical/swinging pendulum tilted at angle θ from the horizontal, the radius is \(r=L\cos\theta\) (L = string length), <strong>not</strong> the string length itself.</li>
+          <li>Find speed either from \(v=\frac{2\pi r}{T}\) (given a period) or from other kinematics.</li>
+          <li>Compute \(a_c=\frac{v^2}{r}\), directed toward the center.</li>
+          <li>If the object is also speeding up/slowing down along the path, compute \(a_t\) separately (ordinary 1-D kinematics along the direction of motion).</li>
+          <li>Combine perpendicular components with the Pythagorean theorem for total acceleration; use inverse tangent for its direction relative to one of the components.</li>
+        </ol>
+      </div>
+
+      <div class="callout rounded-sm p-5 mb-6">
+        <h3 class="font-semibold mb-2 text-[var(--amber-deep)]">Common mistakes &amp; the classic pendulum trap</h3>
+        <ul>
+          <li><strong>"Speed = 0 means acceleration = 0" is FALSE.</strong> At the highest point of a pendulum's swing (momentarily at rest), <span class="mono">\(a_c = v²/r = 0\)</span>, but the pendulum is about to swing back — it has nonzero <em>tangential</em> acceleration (gravity's component along the path). Total acceleration equals the tangential component alone at that instant, and it is <em>not</em> zero.</li>
+          <li>Doubling the radius does <em>not</em> halve \(a_c\) unless speed is held fixed — check whether the problem holds \(v\) or <span class="mono">T</span> constant, since <span class="mono">\(a_c=v^2/r\)</span> and \(a_c=\frac{4\pi^2r}{T^2}\) depend oppositely on r.</li>
+          <li>Using the string length instead of the horizontal radius for a conical pendulum's centripetal calculations.</li>
+          <li>Forgetting that a car cresting a hill has centripetal acceleration pointing <em>downward</em> (toward the center of curvature, which is below the road), so it must be combined vectorially (not just added as a number) with any forward/backward tangential acceleration.</li>
+        </ul>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — pendulum at the top of its swing (from your test's conceptual FRQ)</p>
+        <p class="mb-3">A pendulum swings between points A and C, momentarily at rest at each. A student claims: "the speed at point C is zero, and since a_c = v²/r, the acceleration must be zero there." Explain what's wrong.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>What's right:</strong> it's true that <span class="mono">\(a_c = v²/r = 0\)</span> at point C, since v = 0 there.</p>
+            <p><strong>What's missing:</strong> total acceleration is the vector sum <span class="mono">\(\vec a=\vec a_t+\vec a_c\)</span>, not \(a_c\) alone. At point C the pendulum is about to swing back down toward B — gravity still has a component along the direction of motion (tangent to the arc), producing a nonzero \(a_t\) pointing generally toward B.</p>
+            <p>Since <span class="mono">\(a_c=0\)</span> at that instant, the total acceleration equals the tangential piece alone: $$\vec a = \vec a_t \neq 0$$</p>
+            <p class="text-sm"><strong>Why this matters generally:</strong> "zero velocity" only forces "zero centripetal acceleration" — it never implies zero <em>total</em> acceleration, because tangential acceleration depends on the net tangential force (here, gravity), not on speed.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — car cresting a hill, combined a_t and a_c (from your worksheet)</p>
+        <p class="mb-3">A car crests a hill at 20.0 m/s with a forward (tangential) acceleration of 1.0 m/s². The radius of curvature of the hill at that point is 100 m. Find the car's net acceleration.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p>Centripetal acceleration (points downward, toward the center of the hill's curvature): $$a_c=\frac{v^2}{r}=\frac{20.0^2}{100}=4.00\text{ m/s}^2$$</p>
+            <p>Tangential acceleration (horizontal, forward): <span class="mono">\(a_t = 1.0 m/s²\)</span>. These are perpendicular, so: $$a=\sqrt{a_t^2+a_c^2}=\sqrt{1.0^2+4.00^2}=\sqrt{17.0}=4.12\text{ m/s}^2$$ Direction below the forward horizontal: $$\theta=\tan^{-1}\!\left(\frac{4.00}{1.0}\right)=76°$$</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">a = 4.12 m/s², directed [forward 76° down]</p>
+            <p class="text-sm"><strong>Common mistake avoided:</strong> simply adding 1.0 + 4.00 = 5.0 m/s² — that's only valid if the two accelerations were parallel; here they're perpendicular, so the Pythagorean theorem applies instead.</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6 mb-6">
+        <p class="mono text-xs text-[var(--ink-soft)] mb-1">WORKED EXAMPLE — conical pendulum (from your worksheet)</p>
+        <p class="mb-3">A 0.85 m string swings a ball in a horizontal circle with period 1.3 s. The string makes 30° with the horizontal. Find the ball's speed and acceleration.</p>
+        <details>
+          <summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show full solution</summary>
+          <div class="mt-3 text-[var(--ink-soft)] space-y-2">
+            <p><strong>Key step:</strong> the radius of the circular path is the <em>horizontal</em> projection of the string, not the string length itself: $$r = L\cos30° = 0.85(0.866)=0.736\text{ m}$$</p>
+            <p>Speed: $$v=\frac{2\pi r}{T}=\frac{2\pi(0.736)}{1.3}=3.56\text{ m/s}$$</p>
+            <p>Acceleration (purely centripetal here — constant speed, uniform circular motion): $$a_c=\frac{v^2}{r}=\frac{3.56^2}{0.736}=17.2\text{ m/s}^2$$</p>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block">v = 3.56 m/s;  a = 17.2 m/s² (toward the axis)</p>
+          </div>
+        </details>
+      </div>
+
+      <div class="card rounded-sm p-6">
+        <h3 class="font-semibold mb-3 text-[var(--teal-deep)]">Practice: basic → challenging</h3>
+        <div class="space-y-4">
+          <div><p class="diff-basic text-sm mono mb-1">BASIC</p><p>A coin sits 15 cm from the center of a turntable spinning once per second. Find its speed and centripetal acceleration.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">v=2π(0.15)/1.0=0.942 m/s; a_c=0.942²/0.15=5.92 m/s².</p></details></div>
+          <div><p class="diff-med text-sm mono mb-1">MEDIUM</p><p>A planet orbits its star with period 4.32×10⁶ s and orbital radius 1.10×10¹⁰ m. Find its centripetal acceleration.</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">a_c=4π²r/T²=4π²(1.10×10¹⁰)/(4.32×10⁶)²=2.33×10⁻² m/s², toward the star.</p></details></div>
+          <div><p class="diff-hard text-sm mono mb-1">CHALLENGING</p><p>A car goes around a curve of radius R at speed v. It then goes around a curve of radius 2R at speed 2v. Compare the centripetal accelerations (ratio, second to first).</p>
+            <details><summary class="text-[var(--teal-deep)] mono text-sm cursor-pointer">Answer</summary><p class="text-sm text-[var(--ink-soft)] mt-1">a_c1=v²/R. a_c2=(2v)²/(2R)=4v²/2R=2v²/R=2·a_c1. The second acceleration is twice as big.</p></details></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== 5. REFERENCE SHEET =============== -->
+    <section id="reference" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">05</span><h2 class="text-2xl font-semibold">Quick Reference Sheet</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+      <div class="card rounded-sm p-6 tbl-wrap">
+        <table class="ref-table w-full text-sm">
+          <thead><tr><th>Topic</th><th>Formula</th><th>When missing</th></tr></thead>
+          <tbody>
+            <tr><td>1-D kinematics</td><td>\(v_f = v_o + at\)</td><td>Δx</td></tr>
+            <tr><td>1-D kinematics</td><td>\(\Delta x = v_o t + \tfrac{1}{2}at^2\)</td><td>v_f</td></tr>
+            <tr><td>1-D kinematics</td><td>\(v_f^2 = v_o^2 + 2a\Delta x\)</td><td>t</td></tr>
+            <tr><td>1-D kinematics</td><td>\(\Delta x = \tfrac{1}{2}(v_f+v_o)t\)</td><td>a</td></tr>
+            <tr><td>1-D kinematics</td><td>\(\Delta x = v_f t - \tfrac{1}{2}at^2\)</td><td>v_o</td></tr>
+            <tr><td>Projectile</td><td>\(v_{ox}=v_o\cos\theta,\quad v_{oy}=v_o\sin\theta\)</td><td>decomposition</td></tr>
+            <tr><td>Projectile</td><td>\(x=v_{ox}t;\quad y=v_{oy}t-\tfrac{1}{2}gt^2\)</td><td>independent axes</td></tr>
+            <tr><td>Relative velocity</td><td>\(\vec v_{AC}=\vec v_{AB}+\vec v_{BC}\)</td><td>subscript cancellation</td></tr>
+            <tr><td>Circular motion</td><td>\(v=\frac{2\pi r}{T};\quad a_c=\frac{v^2}{r}=\frac{4\pi^2r}{T^2}\)</td><td>uniform circular motion</td></tr>
+            <tr><td>Circular motion</td><td>\(a=\sqrt{a_t^2+a_c^2}\)</td><td>combined tangential + centripetal</td></tr>
+            <tr><td>Constants</td><td>\(g=9.80\,\mathrm{m/s^2}\;[D]\) (or 9.81)</td><td>free fall / projectile</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- =============== 6. CONCEPTUAL QUESTION BANK =============== -->
+    <section id="concept" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">06</span><h2 class="text-2xl font-semibold">Conceptual Question Bank</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+      <p class="text-[var(--ink-soft)] mb-4">These are the "why", not the "how much" — the kind of multiple-choice reasoning question your quizzes use. Reasoning is given, not just the letter.</p>
+      <div class="space-y-4" id="concept-list"></div>
+    </section>
+
+    <!-- =============== 7. PRACTICE GENERATOR =============== -->
+    <section id="practice" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">07</span><h2 class="text-2xl font-semibold">Practice Problem Generator</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+
+      <div class="card rounded-sm p-6 mb-4">
+        <p class="text-[var(--ink-soft)] mb-3">Pick a topic, generate a fresh randomized problem, work it out, then check your numeric answer or reveal the full step-by-step solution. Every problem states the concept being tested.</p>
+        <div id="category-chips" class="flex flex-wrap gap-2 mb-4"></div>
+        <div class="flex flex-wrap items-center gap-3 mb-2">
+          <button id="new-problem-btn" class="btn-primary px-4 py-2 rounded-sm font-medium">New Problem</button>
+          <span class="mono text-sm text-[var(--ink-soft)]" id="problem-count">#0</span>
+          <span class="mono text-xs text-[var(--ink-soft)] ml-auto">Score: <span id="score-correct">0</span> / <span id="score-total">0</span></span>
+        </div>
+      </div>
+
+      <div class="card rounded-sm p-6">
+        <p class="mono text-xs text-[var(--teal-deep)] mb-1" id="problem-topic">—</p>
+        <p class="mb-1 text-sm text-[var(--ink-soft)]" id="problem-concept"></p>
+        <p class="mb-4 text-lg" id="problem-prompt">Click "New Problem" to begin.</p>
+
+        <div class="flex flex-wrap items-center gap-3 mb-2" id="answer-row">
+          <input type="text" id="answer-input" class="ans-input rounded-sm w-40" placeholder="numeric answer">
+          <span class="mono text-xs text-[var(--ink-soft)]" id="answer-unit"></span>
+          <button id="check-answer-btn" class="btn-ghost px-3 py-1.5 rounded-sm text-sm">Check Answer</button>
+          <button id="show-answer-btn" class="btn-ghost px-3 py-1.5 rounded-sm text-sm">Show Solution</button>
+          <span id="feedback" class="mono text-sm"></span>
+        </div>
+
+        <div id="answer-panel" class="mt-2">
+          <div class="border-t border-[var(--rule)] pt-4 mt-2 text-[var(--ink-soft)] space-y-2">
+            <p class="font-semibold text-[var(--teal-deep)]">Full solution</p>
+            <div id="problem-work" class="space-y-2"></div>
+            <p class="formula-box rounded-sm px-4 py-2 mono inline-block mt-2" id="problem-answer"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============== 8. CHECKLIST =============== -->
+    <section id="checklist" class="scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4"><span class="section-number text-sm">08</span><h2 class="text-2xl font-semibold">Test-Day Checklist</h2></div>
+      <div class="h-[2px] w-16 accent-line mb-6"></div>
+      <div class="card rounded-sm p-6">
+        <ul class="list-disc list-inside space-y-1 text-[var(--ink-soft)]">
+          <li>Pick a positive direction <em>before</em> writing any numbers, and don't change it mid-problem.</li>
+          <li>Write out all five 1-D kinematics variables and circle the one you don't know and don't need.</li>
+          <li>For projectile motion, decompose immediately — never mix horizontal and vertical quantities in one equation.</li>
+          <li>For relative velocity, write the full subscript-cancellation vector equation before touching components.</li>
+          <li>For circular motion, ask: is speed constant? If not, you need both \(a_t\) and \(a_c\), combined with the Pythagorean theorem — never just added.</li>
+          <li>Watch for the "v = 0 ⇒ a = 0" trap — it's false whenever tangential acceleration is present.</li>
+          <li>Use three significant figures and scientific notation for numbers &gt;100 or &lt;0.10, and always give magnitude <em>and</em> direction for vector answers.</li>
+          <li>Sanity-check every answer: is the sign right? Is the size physically reasonable?</li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="max-w-6xl mx-auto px-6 py-10 text-center mono text-xs text-[var(--ink-soft)]">Built for AP Physics 1 / Physics Honors — Kinematics &amp; Circular Motion</footer>
+
+<script>
+(function(){
+  // ---------- render KaTeX ----------
+  function renderMath(root){
+    if(window.renderMathInElement){
+      renderMathInElement(root || document.body, {
+        delimiters:[
+          {left:"$$", right:"$$", display:true},
+          {left:"\\(", right:"\\)", display:false},
+          {left:"$", right:"$", display:false}
+        ],
+        throwOnError:false
+      });
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function(){ renderMath(document.body); });
+
+  // ---------- scroll spy ----------
+  var navLinks = document.querySelectorAll('.navlink');
+  var sections = Array.prototype.map.call(navLinks, function(a){ return document.querySelector(a.getAttribute('href')); });
+  window.addEventListener('scroll', function(){
+    var pos = window.scrollY + 140;
+    var activeIdx = 0;
+    sections.forEach(function(sec, i){ if(sec && sec.offsetTop <= pos) activeIdx = i; });
+    navLinks.forEach(function(a,i){ a.classList.toggle('active', i===activeIdx); });
+  });
+
+  // ---------- helpers ----------
+  function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
+  function randFloat(min,max,decimals){ var d=decimals||1; var v=Math.random()*(max-min)+min; return parseFloat(v.toFixed(d)); }
+  function choose(arr){ return arr[randInt(0,arr.length-1)]; }
+  function sig3(x){
+    if (x===0) return "0.00";
+    var mag = Math.floor(Math.log10(Math.abs(x)));
+    var factor = Math.pow(10, mag-2);
+    var rounded = Math.round(x/factor)*factor;
+    if (Math.abs(rounded) >= 100 || (Math.abs(rounded) < 0.10 && rounded !== 0)){
+      return rounded.toExponential(2).replace('e+','e').replace('e-','e-');
+    }
+    return parseFloat(rounded.toPrecision(3)).toString();
+  }
+  function fmt(x){ return sig3(x); }
+
+  var G = 9.80;
+
+  // ---------- concept question bank (static, from your honors quiz) ----------
+  var conceptQs = [
+    {q:"A brick is dropped from a building. A second brick is thrown straight down at the same time from the same height. Compare their accelerations after release.",
+     a:"Both accelerate at the same rate, \\(g=9.80\,\mathrm{m/s^2}\\) downward — acceleration due to gravity never depends on initial velocity, only on the gravitational field."},
+    {q:"Complete the analogy: acceleration is to velocity as ___ is to ___.",
+     a:"Velocity is to position. Each quantity is the rate of change of the one after it: \\(a=\frac{dv}{dt}\\), \\(v=\frac{dx}{dt}\\) — the same relationship one level down."},
+    {q:"A car's velocity points north while its acceleration points south. What happens to its motion?",
+     a:"The car slows down. Acceleration opposite to velocity always decreases speed, regardless of which compass direction is involved — direction of \\(a\\) relative to \\(v\\) determines speeding up (same direction) vs. slowing down (opposite direction), not the compass direction itself."},
+    {q:"Bullet G is dropped from rest at the same instant bullet H is fired horizontally from the same height. Which hits the ground first?",
+     a:"They hit at the same time. Horizontal and vertical motions are independent — both bullets have identical vertical motion (\\(v_{oy}=0,\quad a=-g\\)), so they fall for the same amount of time regardless of horizontal speed."},
+    {q:"A javelin is thrown at the same speed at four angles: 30°, 40°, 60°, 80°. Which two land at the same distance?",
+     a:"30° and 60°. Range depends on \(\sin(2\theta)\), and \(\sin(2\cdot30^\circ)=\sin(60^\circ)=\sin(120^\circ)=\sin(2\cdot60^\circ)\) — angles that add to 90° give equal ranges on level ground."},
+    {q:"Ignoring air resistance, what happens to the sideways (horizontal) part of a projectile's velocity during flight?",
+     a:"It remains constant. There is no horizontal force (ignoring air resistance), so horizontal velocity never changes throughout the flight."},
+    {q:"Is it possible for an object moving in a circle to have both centripetal and tangential acceleration at the same time?",
+     a:"Yes, if the speed is changing. Centripetal acceleration exists whenever there's circular motion (\\(v\neq0\\)); tangential acceleration exists whenever speed is changing. Both can be nonzero simultaneously — e.g., a car speeding up around a curve."},
+    {q:"A car goes around a curve of radius R at speed v, then a curve of radius 2R at speed 2v. Compare the centripetal accelerations.",
+     a:"The second is four times as big is a common wrong answer — check carefully: \\(a_c=\frac{v^2}{r}\\), so new \\(a_c=\frac{(2v)^2}{2R}=\frac{4v^2}{2R}=2\left(\frac{v^2}{R}\right)\\) = twice the original, not four times. Always substitute both changes before canceling."},
+    {q:"Two displacement vectors have magnitudes 5 m and 7 m. What can you say about the magnitude of their sum?",
+     a:"It could be anywhere between \\(2\,\mathrm{m}\\) (opposite directions) and \\(12\,\mathrm{m}\\) (same direction) — without knowing the angle between them, only that range can be stated; vector magnitudes don't add like scalars unless they're parallel."},
+    {q:"A pendulum comes momentarily to rest at the top of its swing. A student says the acceleration must be zero there since a_c = v²/r = 0. What's wrong?",
+     a:"Centripetal acceleration is zero, but total acceleration is not — gravity still produces a nonzero tangential acceleration pulling the pendulum back toward the bottom of its swing. \\(\vec a=\vec a_t+\vec a_c\\) (vector sum), and only one of the two terms vanished."}
+  ];
+  var conceptListEl = document.getElementById('concept-list');
+  conceptQs.forEach(function(item, idx){
+    var div = document.createElement('div');
+    div.className = 'card rounded-sm p-5';
+    div.innerHTML = '<p class="mb-2">' + (idx+1) + '. ' + item.q + '</p>' +
+      '<details><summary class="flex items-center gap-2 text-[var(--teal-deep)] font-medium"><span class="chevron">▶</span> Show reasoning</summary>' +
+      '<div class="mt-2 text-[var(--ink-soft)] text-sm"><p>' + item.a + '</p></div></details>';
+    conceptListEl.appendChild(div);
+    renderMath(div);
+  });
+
+  // ==================================================================
+  // PRACTICE GENERATOR
+  // ==================================================================
+
+  function generateKinBasic(){
+    var v0 = randInt(2,15), a = choose([1,2,3,4,5]) * choose([1,-1]), t = randInt(2,8);
+    if (a<0 && v0 + a*t < -20) a = Math.abs(a); // keep sane
+    var vf = v0 + a*t;
+    var dx = v0*t + 0.5*a*t*t;
+    var prompt = 'An object starts at ' + v0.toFixed(1) + ' m/s and accelerates at ' + a.toFixed(1) + ' m/s\u00B2 for ' + t + ' s. Find its final velocity (m/s).';
+    var work = [
+      'Given: $v_o=' + v0.toFixed(1) + '$ m/s, $a=' + a.toFixed(1) + '$ m/s\u00B2, $t=' + t + '$ s. Missing: $\\Delta x$ (not needed).',
+      'Use $v_f=v_o+at$ = ' + v0.toFixed(1) + ' + (' + a.toFixed(1) + ')(' + t + ') = ' + fmt(vf) + ' m/s.',
+      'As a check, displacement over this time would be $\\Delta x=v_ot+\\tfrac{1}{2}at^2$ = ' + fmt(dx) + ' m.'
+    ];
+    return {topic:'1-D Kinematics', concept:'Constant-acceleration equation $v_f=v_o+at$.', prompt: prompt, work: work, answer: vf, unit:'m/s', tol:0.05};
+  }
+
+  function generateKinFreefall(){
+    var v0 = randInt(5,15);
+    var depth = randInt(20,60);
+    // vf^2 = v0^2 + 2*(-g)*(-depth) [taking up positive, throwing up, depth below start]
+    var vfsq = v0*v0 + 2*G*depth;
+    var vf = Math.sqrt(vfsq); // downward speed
+    var prompt = 'A ball is thrown straight up at ' + v0.toFixed(1) + ' m/s from the edge of a cliff. Find its speed (m/s) when it is ' + depth + '.0 m below the launch point. (Use g = 9.80 m/s\u00B2)';
+    var work = [
+      'Take up as positive: $v_o=+' + v0.toFixed(1) + '$ m/s, $a=-9.80\\,\\mathrm{m/s^2}$, $\\Delta y=-' + depth + '.0$ m.',
+      'Use $v_f^2=v_o^2+2a\\Delta y$ = ' + v0.toFixed(1) + '² + 2(-9.80)(-' + depth + '.0) = ' + fmt(vfsq) + '.',
+      '$v_f=\\pm' + fmt(vf) + '$ m/s; take the negative (downward) root since the ball is below and falling: speed = ' + fmt(vf) + ' m/s.'
+    ];
+    return {topic:'1-D Kinematics', concept:'Free fall using $v_f^2=v_o^2+2a\\Delta y$, choosing the physical root.', prompt: prompt, work: work, answer: vf, unit:'m/s', tol:0.05};
+  }
+
+  function generateProjLevel(){
+    var v0 = randInt(15,35);
+    var angDeg = choose([20,25,30,35,40,50,55,60]);
+    var ang = angDeg*Math.PI/180;
+    var vox = v0*Math.cos(ang), voy = v0*Math.sin(ang);
+    var range = (vox*2*voy)/G;
+    var maxH = (voy*voy)/(2*G);
+    var flightT = 2*voy/G;
+    var which = choose(['range','height','time']);
+    var prompt = 'A projectile launches from level ground at ' + v0.toFixed(1) + ' m/s at ' + angDeg + '\u00B0 above horizontal and lands at the same height. Find its ';
+    var ans, unit, cField;
+    if (which==='range'){ prompt += 'horizontal range (m).'; ans=range; unit='m'; cField='range';}
+    else if (which==='height'){ prompt += 'maximum height above the ground (m).'; ans=maxH; unit='m'; cField='max height';}
+    else { prompt += 'total flight time (s).'; ans=flightT; unit='s'; cField='flight time';}
+    var work = [
+      'Decompose: $v_{ox}=v_o\\cos\\theta$ = ' + v0.toFixed(1) + ' cos(' + angDeg + '°) = ' + fmt(vox) + ' m/s, $v_{oy}=v_o\\sin\\theta$ = ' + fmt(voy) + ' m/s.',
+      'Total flight time (launch/land at same height): $t=\\frac{2v_{oy}}{g}$ = ' + fmt(flightT) + ' s.',
+      'Max height: $y_{max}=\\frac{v_{oy}^2}{2g}$ = ' + fmt(maxH) + ' m.',
+      'Range: $x=v_{ox}t$ = ' + fmt(vox) + ' × ' + fmt(flightT) + ' = ' + fmt(range) + ' m.',
+      'Requested quantity (' + cField + ') = ' + fmt(ans) + ' ' + unit + '.'
+    ];
+    return {topic:'Projectile Motion', concept:'Decompose launch velocity; use symmetric same-height range/height/time relations.', prompt: prompt, work: work, answer: ans, unit: unit, tol:0.05};
+  }
+
+  function generateProjHeight(){
+    var v0 = randInt(8,25);
+    var h = randInt(15,50);
+    var t = Math.sqrt(2*h/G);
+    var range = v0*t;
+    var vfy = G*t;
+    var vImpact = Math.sqrt(v0*v0 + vfy*vfy);
+    var which = choose(['time','range','speed']);
+    var prompt = 'A ball is launched horizontally at ' + v0.toFixed(1) + ' m/s from a ledge ' + h + '.0 m high. Find the ';
+    var ans, unit;
+    if (which==='time'){ prompt += 'time to land (s).'; ans=t; unit='s'; }
+    else if (which==='range'){ prompt += 'horizontal distance traveled before landing (m).'; ans=range; unit='m'; }
+    else { prompt += 'speed just before impact (m/s).'; ans=vImpact; unit='m/s'; }
+    var work = [
+      'Vertical motion only depends on height: $\\Delta y=\\tfrac{1}{2}gt^2$ → $t=\\sqrt{2h/g}$ = √(2(' + h + ')/9.80) = ' + fmt(t) + ' s.',
+      'Horizontal: $x=v_{ox}t$ = ' + v0.toFixed(1) + ' × ' + fmt(t) + ' = ' + fmt(range) + ' m ($v_{ox}$ never changes).',
+      'Vertical speed at impact: $v_{fy}=gt$ = 9.80 × ' + fmt(t) + ' = ' + fmt(vfy) + ' m/s.',
+      'Impact speed: $v=\\sqrt{v_{ox}^2+v_{fy}^2}$ = √(' + v0.toFixed(1) + '²+' + fmt(vfy) + '²) = ' + fmt(vImpact) + ' m/s.'
+    ];
+    return {topic:'Projectile Motion', concept:'Horizontal launch from a height: independent axes sharing time $t$.', prompt: prompt, work: work, answer: ans, unit: unit, tol:0.05};
+  }
+
+  function generateRelVelVector(){
+    // v_AC = v_AB + v_BC ; given v_AC and v_AB (as compass Nx Ey), find v_BC magnitude
+    var acMag = randInt(2,10), acDeg = randInt(0,80);
+    var abMag = randInt(2,10), abDeg = randInt(0,80);
+    var acx = acMag*Math.sin(acDeg*Math.PI/180), acy = acMag*Math.cos(acDeg*Math.PI/180); // deg from North toward East
+    var abx = abMag*Math.sin(abDeg*Math.PI/180), aby = abMag*Math.cos(abDeg*Math.PI/180);
+    var bcx = acx-abx, bcy = acy-aby;
+    var bcMag = Math.sqrt(bcx*bcx+bcy*bcy);
+    var prompt = 'Object A moves at ' + acMag.toFixed(1) + ' m/s [E' + acDeg + '\u00B0N] relative to the ground (C). Relative to object B, A moves at ' + abMag.toFixed(1) + ' m/s [E' + abDeg + '\u00B0N]. Find the speed of B relative to the ground (m/s).';
+    var work = [
+      'Vector equation: $\\vec v_{AC}=\\vec v_{AB}+\\vec v_{BC}$ → $\\vec v_{BC}=\\vec v_{AC}-\\vec v_{AB}$.',
+      'Components (East=x, North=y): $\\vec v_{AC}$ = (' + fmt(acx) + ', ' + fmt(acy) + '), $\\vec v_{AB}$ = (' + fmt(abx) + ', ' + fmt(aby) + ').',
+      '$\\vec v_{BC}$ = (' + fmt(acx) + ' − ' + fmt(abx) + ', ' + fmt(acy) + ' − ' + fmt(aby) + ') = (' + fmt(bcx) + ', ' + fmt(bcy) + ').',
+      '$|\\vec v_{BC}|$ = √(' + fmt(bcx) + '² + ' + fmt(bcy) + '²) = ' + fmt(bcMag) + ' m/s.'
+    ];
+    return {topic:'Relative Velocity', concept:'Vector subtraction using subscript-cancellation: $\\vec v_{BC}=\\vec v_{AC}-\\vec v_{AB}$.', prompt: prompt, work: work, answer: bcMag, unit:'m/s', tol:0.05};
+  }
+
+  function generateRelVelRiver(){
+    var swim = randFloat(2.0,4.5,1);
+    var current = randFloat(0.5, swim-0.3, 1);
+    var width = randInt(50,300)*10;
+    var which = choose(['time','drift','eastComp']);
+    var eastComp = Math.sqrt(swim*swim - current*current);
+    var t = width/eastComp;
+    var drift = current*(width/swim); // if aiming straight across instead (alt scenario) -- keep to straight-across-heading scenario for 'time'/'eastComp'
+    var prompt, ans, unit, work;
+    if (which==='eastComp'){
+      prompt = 'A swimmer can swim ' + swim + ' m/s in still water, crossing a river flowing at ' + current + ' m/s. To move straight across (perpendicular to the current), what is the swimmer\u2019s resultant speed relative to the ground (m/s)?';
+      ans = eastComp; unit='m/s';
+      work = [
+        'To go straight across, the swimmer must angle upstream so the current-canceling component uses up part of the ' + swim + ' m/s swim speed.',
+        'Resultant (cross-stream) speed: $v=\\sqrt{v_{swim}^2-v_{current}^2}$ = √(' + swim + '² − ' + current + '²) = ' + fmt(eastComp) + ' m/s.'
+      ];
+    } else {
+      prompt = 'A swimmer swims at ' + swim + ' m/s in still water, angled to go straight across a ' + width + ' m wide river flowing at ' + current + ' m/s. Find the time to cross (s).';
+      ans = t; unit='s';
+      work = [
+        'Resultant cross-stream speed: $v=\\sqrt{v_{swim}^2-v_{current}^2}$ = √(' + swim + '² − ' + current + '²) = ' + fmt(eastComp) + ' m/s.',
+        'Crossing time uses only this cross-stream speed and the width: $t=\\frac{width}{v}$ = ' + width + ' / ' + fmt(eastComp) + ' = ' + fmt(t) + ' s.'
+      ];
+    }
+    return {topic:'Relative Velocity', concept:'River-crossing geometry: only the cross-stream component of velocity matters for crossing time.', prompt: prompt, work: work, answer: ans, unit: unit, tol:0.05};
+  }
+
+  function generateCircBasic(){
+    var r = randFloat(0.2,2.0,2);
+    var T = randFloat(0.5,3.0,2);
+    var v = 2*Math.PI*r/T;
+    var ac = v*v/r;
+    var which = choose(['speed','accel']);
+    var prompt = 'An object moves in a circle of radius ' + r + ' m with period ' + T + ' s. Find its ';
+    var ans, unit;
+    if (which==='speed'){ prompt += 'speed (m/s).'; ans=v; unit='m/s'; }
+    else { prompt += 'centripetal acceleration (m/s²).'; ans=ac; unit='m/s²'; }
+    var work = [
+      'Speed: $v=\\frac{2\\pi r}{T}$ = 2π(' + r + ')/' + T + ' = ' + fmt(v) + ' m/s.',
+      'Centripetal acceleration: $a_c=\\frac{v^2}{r}$ = ' + fmt(v) + '²/' + r + ' = ' + fmt(ac) + ' m/s², directed toward the center.'
+    ];
+    return {topic:'Circular Motion', concept:'$v=2\\pi r/T$ and $a_c=v^2/r$ for uniform circular motion.', prompt: prompt, work: work, answer: ans, unit: unit, tol:0.05};
+  }
+
+  function generateCircCombined(){
+    var v = randInt(10,30);
+    var r = randInt(50,200);
+    var at = randFloat(0.5,3.0,1);
+    var ac = v*v/r;
+    var atotal = Math.sqrt(at*at+ac*ac);
+    var prompt = 'A car moving at ' + v.toFixed(1) + ' m/s crests a hill of radius of curvature ' + r + ' m while accelerating forward at ' + at + ' m/s². Find the magnitude of its total acceleration (m/s²).';
+    var work = [
+      'Centripetal acceleration (toward the center, i.e. downward at the crest): $a_c=\\frac{v^2}{r}$ = ' + v.toFixed(1) + '²/' + r + ' = ' + fmt(ac) + ' m/s².',
+      'Tangential acceleration (forward, horizontal): $a_t=' + at + '$ m/s². These are perpendicular.',
+      'Total: $a=\\sqrt{a_t^2+a_c^2}$ = √(' + at + '² + ' + fmt(ac) + '²) = ' + fmt(atotal) + ' m/s².'
+    ];
+    return {topic:'Circular Motion', concept:'Combining perpendicular tangential and centripetal accelerations with the Pythagorean theorem.', prompt: prompt, work: work, answer: atotal, unit:'m/s²', tol:0.05};
+  }
+
+  var categories = [
+    {id:'kin-basic', label:'1D: Basic Kinematics', gen: generateKinBasic},
+    {id:'kin-freefall', label:'1D: Free Fall', gen: generateKinFreefall},
+    {id:'proj-level', label:'Projectile: Level Ground', gen: generateProjLevel},
+    {id:'proj-height', label:'Projectile: From a Height', gen: generateProjHeight},
+    {id:'relvel-vector', label:'Relative Velocity: Vectors', gen: generateRelVelVector},
+    {id:'relvel-river', label:'Relative Velocity: River', gen: generateRelVelRiver},
+    {id:'circ-basic', label:'Circular: Basic', gen: generateCircBasic},
+    {id:'circ-combined', label:'Circular: Combined a', gen: generateCircCombined}
+  ];
+
+  var state = { categoryId:'mixed', count:0, answerShown:false, current:null, correct:0, total:0 };
+
+  function renderChips(){
+    var container = document.getElementById('category-chips');
+    container.innerHTML = '';
+    var all = [{id:'mixed', label:'Mixed'}].concat(categories);
+    all.forEach(function(cat){
+      var btn = document.createElement('button');
+      btn.className = 'chip px-3 py-1.5 rounded-full' + (state.categoryId===cat.id ? ' active':'');
+      btn.textContent = cat.label;
+      btn.addEventListener('click', function(){ state.categoryId = cat.id; renderChips(); newProblem(); });
+      container.appendChild(btn);
+    });
+  }
+
+  function newProblem(){
+    state.count++;
+    state.answerShown = false;
+    var gen;
+    if (state.categoryId === 'mixed'){ gen = choose(categories); }
+    else { gen = categories.filter(function(c){ return c.id===state.categoryId; })[0]; }
+    var problem = gen.gen();
+    state.current = problem;
+    document.getElementById('problem-count').textContent = '#' + state.count;
+    document.getElementById('problem-topic').textContent = problem.topic;
+    document.getElementById('problem-concept').innerHTML = 'Tests: ' + problem.concept;
+    document.getElementById('problem-prompt').textContent = problem.prompt;
+    document.getElementById('answer-unit').textContent = problem.unit;
+    document.getElementById('answer-input').value = '';
+    document.getElementById('feedback').textContent = '';
+    document.getElementById('feedback').className = 'mono text-sm';
+    var workEl = document.getElementById('problem-work');
+    workEl.innerHTML = '';
+    problem.work.forEach(function(line){
+      var p = document.createElement('p');
+      p.innerHTML = line;
+      workEl.appendChild(p);
+    });
+    document.getElementById('problem-answer').textContent = 'Answer: ' + fmt(problem.answer) + ' ' + problem.unit;
+    document.getElementById('answer-panel').classList.remove('open');
+    document.getElementById('show-answer-btn').textContent = 'Show Solution';
+    renderMath(document.getElementById('problem-work'));
+  }
+
+  document.getElementById('new-problem-btn').addEventListener('click', newProblem);
+  document.getElementById('show-answer-btn').addEventListener('click', function(){
+    state.answerShown = !state.answerShown;
+    var panel = document.getElementById('answer-panel');
+    panel.classList.toggle('open', state.answerShown);
+    this.textContent = state.answerShown ? 'Hide Solution' : 'Show Solution';
+  });
+  document.getElementById('check-answer-btn').addEventListener('click', function(){
+    if (!state.current) return;
+    var val = parseFloat(document.getElementById('answer-input').value);
+    var fb = document.getElementById('feedback');
+    if (isNaN(val)){ fb.textContent = 'Enter a number first.'; fb.className='mono text-sm'; return; }
+    state.total++;
+    var correctVal = state.current.answer;
+    var tol = Math.max(Math.abs(correctVal) * (state.current.tol||0.05), 0.01);
+    if (Math.abs(val - correctVal) <= tol){
+      state.correct++;
+      fb.textContent = 'Correct!';
+      fb.className = 'mono text-sm correct';
+    } else {
+      fb.textContent = 'Not quite — try again or show the solution.';
+      fb.className = 'mono text-sm incorrect';
+    }
+    document.getElementById('score-correct').textContent = state.correct;
+    document.getElementById('score-total').textContent = state.total;
+  });
+
+  renderChips();
+  newProblem();
+})();
+</script>
+</body>
+</html>
